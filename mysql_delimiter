@@ -1,0 +1,49 @@
+CREATE TABLE master ( ip varchar(200), fqdn varchar(200) ,server_name varchar(200) not null ,serverowner varchar(200) ,application_name varchar(200),app_support_contact varchar(200),console varchar(200), machine_type varchar(200),site_type varchar(200),os_type varchar(200),oslevel varchar(200),bu varchar(200),source varchar(200), decomission varchar(200),date varchar(100),decomission_request varchar(200),category varchar(100),environment varchar(100),in_scope_for_patch varchar(100),updated_by varchar(200),last_patched varchar(200),change_at  timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,PRIMARY KEY (ip));
+
+
+CREATE table MASTER_HISTORY
+
+
+CREATE TABLE master_history ( ip varchar(200), fqdn varchar(200) ,server_name varchar(200) not null ,serverowner varchar(200) ,application_name varchar(200),app_support_contact varchar(200),console varchar(200), machine_type varchar(200),site_type varchar(200),os_type varchar(200),oslevel varchar(200),bu varchar(200),source varchar(200), decomission varchar(200),date varchar(100),decomission_request varchar(200),category varchar(100),environment varchar(100),in_scope_for_patch varchar(100),updated_by varchar(200),last_patched varchar(200),change_at  timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
+
+
+
+
+DELIMITER ///
+
+CREATE TRIGGER update_data after UPDATE on master
+FOR EACH ROW
+BEGIN
+    IF (NEW.serverowner != OLD.serverowner)
+       or ( NEW.fqdn != OLD.fqdn)
+       or ( NEW.server_name != OLD.server_name)
+      or ( NEW.application_name != OLD.application_name)
+or ( NEW.app_support_contact != OLD.app_support_contact)
+or ( NEW.console != OLD.console)
+or ( NEW.site_type != OLD.site_type)
+or ( NEW.os_type != OLD.os_type)
+or ( NEW.oslevel != OLD.oslevel)
+or ( NEW.bu != OLD.bu)
+or ( NEW.source != OLD.source)
+or ( NEW.decomission != OLD.decomission)
+or ( NEW.date != OLD.date)
+or ( NEW.decomission_request != OLD.decomission_request)
+or ( NEW.category != OLD.category)
+or ( NEW.environment != OLD.environment)
+or ( NEW.in_scope_for_patch != OLD.in_scope_for_patch)
+or ( NEW.change_at != OLD.change_at)
+or ( NEW.updated_by != OLD.updated_by)
+or ( NEW.last_patched != OLD.last_patched)
+or ( NEW.ip != OLD.ip)
+or ( NEW.machine_type != OLD.machine_type)
+
+
+ THEN
+        INSERT INTO master_history(serverowner,fqdn,server_name,application_name,app_support_contact,console,site_type,os_type,oslevel,bu,source,decomission,date,decomission_request,category,environment,in_scope_for_patch,change_at,ip,machine_type,last_patched,updated_by)VALUES(OLD.serverowner,OLD.fqdn,OLD.server_name,OLD.application_name ,OLD.app_support_contact,OLD.console, OLD.site_type,OLD.os_type,OLD.oslevel,OLD.bu,OLD.source,OLD.decomission,OLD.date ,OLD.decomission_request,OLD.category,OLD.environment,OLD.in_scope_for_patch,OLD.change_at,OLD.ip,OLD.machine_type,OLD.last_patched,OLD.updated_by);
+    END IF;
+
+END;
+
+///
+
+DELIMITER ;
